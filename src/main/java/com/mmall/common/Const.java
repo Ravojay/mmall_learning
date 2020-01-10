@@ -19,6 +19,14 @@ public class Const {
         int ROLE_ADMIN=1;
     }
 
+    public static interface Cart{
+        int CHECKED=1;
+        int UN_CHECKED=0;
+        String LIMIT_NUM_FAIL="LIMIT_NUM_FAIL";
+        String LIMIT_NUM_SUCCESS="LIMIT_NUM_SUCCESS";
+    }
+
+
     public enum ProductStatusEnum{
         ON_SALE(1,"online");
         private String value;
