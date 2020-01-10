@@ -1,5 +1,7 @@
 package com.mmall.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Maps;
 import com.mmall.common.ServiceResponse;
 import com.mmall.dao.ShippingMapper;
@@ -9,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -53,5 +56,13 @@ public class ShippingServiceImpl implements IShippingService{
         Shipping shipping = shippingMapper.selectByShippingIdAndUserId(userId,shippingId);
         if(shipping!=null) return ServiceResponse.createBySuccess("select success",shipping);
         return ServiceResponse.createByErrorMsg("select failed");
+    }
+
+    public ServiceResponse<PageInfo> list(Integer userId,int pageNum,int pageSize){
+        PageHelper.startPage(pageNum,pageSize);
+        List<Shipping> shippingList = shippingMapper.selectByUserId(userId);
+        PageInfo pageInfo = new PageInfo(shippingList);
+        return ServiceResponse.createBySuccess(pageInfo);
+
     }
 }

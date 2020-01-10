@@ -1,5 +1,7 @@
 package com.mmall.controller.portal;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.mmall.common.Const;
 import com.mmall.common.ResponseCode;
 import com.mmall.common.ServiceResponse;
@@ -9,10 +11,12 @@ import com.mmall.service.IShippingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 /**
  * Created by ravojay on 1/10/20.
@@ -59,5 +63,15 @@ public class ShippingController {
     }
 
 
-    public ServiceResponse<L<Shipping>>
+    @RequestMapping("list.do")
+    @ResponseBody
+    public ServiceResponse<PageInfo> list(
+                                          @RequestParam(value = "pageNum",defaultValue = "1") int pageNum,
+                                          @RequestParam(value = "pageSize",defaultValue = "10") int pageSize,
+                                          HttpSession session){
+
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if(user==null) return ServiceResponse.createByErrorCodeMsg(ResponseCode.NEED_LOGIN.getCode(),"need login");
+        return iShippingService.list(user.getId(),pageNum,pageSize);
+    }
 }

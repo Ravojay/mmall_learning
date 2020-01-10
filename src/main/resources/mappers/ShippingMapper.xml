@@ -205,4 +205,9 @@
     AND
     user_id=#{userId}
   </select>
+  <select id="selectByUserId" parameterMap="int" resultMap="BaseReultMap">
+    select <include refid="Base_Column_List"></include>
+    from mmall_shipping where
+    user_id = #{userId}
+  </select>
 </mapper>
